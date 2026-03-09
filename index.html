@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>TuongTanDigital-AI — AI Suite Powered by Gemini</title>
+    <meta name="description" content="Bộ công cụ AI toàn diện: RAG Notebook, Phiên âm, TTS, Ghi hình, Chuyển đổi tài liệu — Powered by Gemini AI. © TuongTanDigital">
+    <meta name="author" content="TuongTanDigital">
+    <meta name="copyright" content="© 2025 TuongTanDigital. All rights reserved.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="TuongTanDigital-AI — AI Suite Powered by Gemini">
+    <meta property="og:description" content="Notebook AI, Speech-to-Text, Text-to-Speech 30 giọng, Ghi hình & Biên bản họp, Chuyển đổi tài liệu — Hoàn toàn miễn phí">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#4F46E5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <!-- Favicon SVG -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%234F46E5'/><stop offset='100%25' stop-color='%237C3AED'/></linearGradient></defs><rect width='100' height='100' rx='22' fill='url(%23g)'/><text x='50' y='68' font-family='Arial Black,sans-serif' font-size='52' font-weight='900' fill='white' text-anchor='middle'>VSH</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text x='50' y='68' font-family='Arial Black' font-size='52' font-weight='900' fill='white' text-anchor='middle'>VSH</text></svg>">
+    <!-- PDF.js CDN for Document Viewer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+    <!-- docx.js CDN for DOCX export -->
+    <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.min.js" defer></script>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ===== SPLASH SCREEN (T-B1) ===== -->
+    <div id="splashScreen" class="splash-screen">
+        <div class="splash-inner">
+            <div class="splash-logo">
+                <div class="splash-logo-badge">T</div>
+                <div class="splash-logo-ring"></div>
+            </div>
+            <h1 class="splash-title">TuongTanDigital-AI</h1>
+            <p class="splash-tagline">AI Suite — Powered by Gemini</p>
+            <div class="splash-loader">
+                <div class="splash-loader-bar"></div>
+            </div>
+            <p class="splash-copy">© 2025 TuongTanDigital. All rights reserved.</p>
+        </div>
+    </div>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header" id="appHeader">
+        <div class="header-inner">
+            <!-- Logo -->
+            <a class="logo-wrap" href="#" onclick="switchTab('notebook',this);return false;">
+                <div class="logo-badge">T</div>
+                <div class="logo-text">
+                    <h1>TuongTanDigital-AI</h1>
+                    <p>AI Suite — Powered by Gemini</p>
+                </div>
+            </a>
+
+            <!-- Nav Tabs (Desktop) -->
+            <nav class="nav-tabs" id="navTabs">
+                <button class="nav-tab active" onclick="switchTab('notebook',this)" data-tab="notebook">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    <span>Notebook AI</span>
+                </button>
+                <button class="nav-tab" onclick="switchTab('stt',this)" data-tab="stt">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                    <span>Phiên âm</span>
+                </button>
+                <button class="nav-tab" onclick="switchTab('tts',this)" data-tab="tts">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                    <span>Đọc TTS</span>
+                </button>
+                <button class="nav-tab" onclick="switchTab('rec',this)" data-tab="rec">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+                    <span>Ghi hình</span>
+                </button>
+                <button class="nav-tab" onclick="switchTab('cvt',this)" data-tab="cvt">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                    <span>Chuyển đổi</span>
+                </button>
+                <button class="nav-tab" onclick="switchTab('settings',this)" data-tab="settings">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    <span>Cài đặt</span>
+                </button>
+            </nav>
+
+            <!-- Header Actions -->
+            <div class="hdr-actions">
+                <!-- Notebook Sidebar Toggle (T-C1) -->
+                <button class="btn-icon" id="sidebarToggleBtn" onclick="toggleNotebookSidebar()" title="Notebooks">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <!-- Command Palette (T-N3) -->
+                <button class="btn-icon" onclick="openCommandPalette()" title="Tìm lệnh (Ctrl+P)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                </button>
+                <!-- Focus Mode (T-U8) -->
+                <button class="btn-icon" id="focusModeBtn" onclick="toggleFocusMode()" title="Focus Mode">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                </button>
+                <!-- Dark Mode Toggle -->
+                <button class="btn-icon" id="hdrDarkBtn" onclick="toggleDark()" title="Chế độ sáng/tối">🌙</button>
+                <!-- Help (T-H1) -->
+                <button class="btn-icon" onclick="openOverlay('helpOverlay')" title="Hướng dẫn sử dụng">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </button>
+                <!-- API Key -->
+                <button class="btn-apikey" onclick="openOverlay('apiOverlay')">
+                    <div class="api-dot" id="apiDot"></div>
+                    <span id="apiKeyLabel">API KEYS</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero" id="heroSection">
+        <div class="hero-badge">✨ TuongTanDigital-AI — Miễn phí 100%</div>
+        <h2 id="heroTitle">Notebook AI — Phân tích tài liệu thông minh</h2>
+        <p id="heroDesc">Upload tài liệu, đặt câu hỏi, nhận câu trả lời có trích dẫn nguồn. Hoàn toàn miễn phí.</p>
+        <div class="hero-shortcuts">
+            <span class="kbd-hint"><kbd>Ctrl</kbd>+<kbd>K</kbd> Chat</span>
+            <span class="kbd-hint"><kbd>Ctrl</kbd>+<kbd>P</kbd> Lệnh</span>
+            <span class="kbd-hint"><kbd>Ctrl</kbd>+<kbd>D</kbd> Dark</span>
+            <span class="kbd-hint"><kbd>Ctrl</kbd>+<kbd>S</kbd> Lưu</span>
+            <span class="kbd-hint"><kbd>Ctrl</kbd>+<kbd>\</kbd> Split</span>
+        </div>
+    </section>
+
+    <!-- ===== NOTEBOOK SIDEBAR (T-C1: Multi-Notebook Manager) ===== -->
+    <aside class="notebook-sidebar" id="notebookSidebar">
+        <div class="nb-sidebar-header">
+            <h3>📚 Notebooks</h3>
+            <button class="nb-sidebar-close" onclick="toggleNotebookSidebar()">✕</button>
+        </div>
+        <div class="nb-sidebar-actions">
+            <button class="btn btn-primary btn-sm" onclick="createNewNotebook()" style="width:100%">
+                ➕ Tạo Notebook mới
+            </button>
+        </div>
+        <div class="nb-sidebar-search">
+            <input type="text" class="input" placeholder="🔍 Tìm notebook..." oninput="filterNotebooks(this.value)" style="font-size:12px">
+        </div>
+        <div class="nb-sidebar-list" id="notebookList">
+            <!-- Rendered by JS -->
+        </div>
+        <div class="nb-sidebar-footer">
+            <span id="nbCount">0 notebooks</span>
+            <span>Tối đa 20</span>
+        </div>
+    </aside>
+    <div class="nb-sidebar-backdrop" id="nbSidebarBackdrop" onclick="toggleNotebookSidebar()"></div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main" id="mainContent">
+
+        <!-- ==================== TAB: NOTEBOOK AI ==================== -->
+        <div class="tab-panel active" id="tab-notebook">
+            <!-- Split View Container (T-N9) -->
+            <div class="notebook-layout" id="notebookLayout">
+                <!-- Left: Source Panel -->
+                <div class="notebook-sources-col" id="notebookSourcesCol">
+                    <div class="card">
+                        <div class="card-title" style="justify-content:space-between">
+                            <span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                NGUỒN TÀI LIỆU (<span id="srcCount">0</span>)
+                            </span>
+                            <div style="display:flex;gap:4px;align-items:center">
+                                <!-- Session save indicator -->
+                                <span id="sessionSaveIndicator" style="display:none;font-size:10px;color:var(--success)">💾 Đã lưu</span>
+                                <!-- Source search (T-U6) -->
+                                <button class="btn-icon" onclick="toggleSourceSearch()" title="Tìm trong nguồn" style="width:28px;height:28px">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Source Search Bar (T-U6) -->
+                        <div id="sourceSearchBar" class="source-search-bar" style="display:none">
+                            <input type="text" class="input" placeholder="Tìm text trong tất cả nguồn..." oninput="searchInSources(this.value)" style="font-size:12px">
+                            <div id="sourceSearchResults" class="source-search-results"></div>
+                        </div>
+
+                        <!-- Sources List -->
+                        <div class="sources-panel" id="sourcesList">
+                            <div class="empty-st" id="srcEmpty">
+                                <p>📄 Chưa có nguồn tài liệu nào</p>
+                                <p style="font-size:11px;margin-top:4px">Thêm tài liệu bên dưới để bắt đầu</p>
+                            </div>
+                        </div>
+
+                        <!-- Add Source Buttons -->
+                        <div class="add-source-btns" style="margin-top:12px">
+                            <button class="add-src-btn" onclick="document.getElementById('srcFileInput').click()">
+                                📎 Tải file
+                                <input type="file" id="srcFileInput" style="display:none" accept=".pdf,.txt,.md,.docx,.jpg,.jpeg,.png,.webp,.gif,.mp3,.wav,.ogg,.m4a,.webm" onchange="onSourceFile(this)" multiple>
+                            </button>
+                            <button class="add-src-btn" onclick="openOverlay('urlSourceOverlay')">
+                                🔗 URL
+                            </button>
+                            <button class="add-src-btn" onclick="openOverlay('textSourceOverlay')">
+                                📝 Nhập văn bản
+                            </button>
+                            <button class="add-src-btn" onclick="openOverlay('youtubeSourceOverlay')">
+                                🎬 YouTube
+                            </button>
+                        </div>
+
+                        <!-- Source Management Actions -->
+                        <div class="action-row" style="margin-top:10px">
+                            <button class="btn btn-secondary btn-sm" onclick="clearAllSources()">🗑️ Xóa hết</button>
+                            <button class="btn btn-secondary btn-sm" onclick="openOverlay('exportOverlay')">📤 Xuất</button>
+                            <button class="btn btn-secondary btn-sm" onclick="importNotebookSession()">📥 Nhập
+                                <input type="file" id="importSessionFile" style="display:none" accept=".json" onchange="doImportSession(this)">
+                            </button>
+                        </div>
+
+                        <!-- Persona Selector (T-N7) -->
+                        <div style="margin-top:12px">
+                            <label class="lbl">🎭 PHONG CÁCH AI</label>
+                            <select class="select" id="personaSelect" onchange="setPersona(this.value)">
+                                <option value="default">🤖 Mặc định — Trợ lý AI thông minh</option>
+                                <option value="professor">🎓 Giáo sư — Học thuật, trích dẫn chính xác</option>
+                                <option value="friend">🤝 Bạn bè — Gần gũi, dễ hiểu</option>
+                                <option value="expert">💼 Chuyên gia — Phân tích sâu, đề xuất cụ thể</option>
+                                <option value="journalist">📰 Phóng viên — Tường thuật, 5W1H</option>
+                                <option value="tutor">👩‍🏫 Gia sư — Giải thích từng bước</option>
+                            </select>
+                        </div>
+
+                        <!-- Model Selector -->
+                        <div style="margin-top:10px">
+                            <label class="lbl">🧠 MODEL AI</label>
+                            <select class="select" id="modelSelect" onchange="setModel(this.value)">
+                                <option value="gemini-2.5-flash">⚡ Gemini 2.5 Flash (Nhanh, miễn phí)</option>
+                                <option value="gemini-2.5-pro">🏆 Gemini 2.5 Pro (Chất lượng cao)</option>
+                                <option value="gemini-2.0-flash">🔄 Gemini 2.0 Flash</option>
+                            </select>
+                        </div>
+
+                        <!-- Compare Mode (T-AI2) -->
+                        <div class="divider"></div>
+                        <div class="card-title">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"/><path d="m15 9 6-6"/></svg>
+                            SO SÁNH TÀI LIỆU
+                        </div>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap">
+                            <select class="select" id="cmpSrcA" style="flex:1;font-size:11px"></select>
+                            <span style="color:var(--text3);font-size:12px;align-self:center">VS</span>
+                            <select class="select" id="cmpSrcB" style="flex:1;font-size:11px"></select>
+                        </div>
+                        <button class="btn btn-secondary btn-sm" onclick="runCompare()" style="width:100%;margin-top:8px">⚖️ So sánh</button>
+                        <div class="prog-wrap" id="compareProg">
+                            <div class="prog-bg"><div class="prog-fill" id="compareProgFill"></div></div>
+                            <div class="prog-txt" id="compareProgTxt"></div>
+                        </div>
+                        <div id="compareResult" class="result-box" style="display:none;margin-top:8px;max-height:300px"></div>
+                    </div>
+                </div>
+
+                <!-- Resize Handle (T-U4) -->
+                <div class="resize-handle" id="resizeHandle" title="Kéo để thay đổi kích thước">
+                    <div class="resize-handle-dots">⋮</div>
+                </div>
+
+                <!-- Right: Chat Area -->
+                <div class="notebook-chat-col" id="notebookChatCol">
+                    <div class="card" style="display:flex;flex-direction:column;height:100%">
+                        <div class="card-title" style="justify-content:space-between;flex-shrink:0">
+                            <span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                NOTEBOOK AI CHAT
+                            </span>
+                            <div style="display:flex;gap:4px;align-items:center">
+                                <span id="nbStatus" class="badge" style="display:none"></span>
+                                <!-- Split View Toggle (T-N9) -->
+                                <button class="btn-icon" id="splitViewBtn" onclick="toggleSplitView()" title="Split View (Ctrl+\)" style="width:28px;height:28px">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Chat Toolbar -->
+                        <div class="chat-toolbar" id="chatToolbar">
+                            <button class="btn btn-secondary btn-sm" onclick="nbQuickAction('summary')" title="Tóm tắt tài liệu">📝 Tóm tắt</button>
+                            <button class="btn btn-secondary btn-sm" onclick="nbQuickAction('keypoints')" title="Ý chính">🎯 Ý chính</button>
+                            <button class="btn btn-secondary btn-sm" onclick="nbQuickAction('questions')" title="Tạo câu hỏi">❓ Câu hỏi</button>
+                            <button class="btn btn-secondary btn-sm" onclick="nbQuickAction('flashcard')" title="Tạo Flashcard">🃏 Flashcard</button>
+                            <button class="btn btn-secondary btn-sm" onclick="nbQuickAction('mindmap')" title="Mind Map">🧠 Mind Map</button>
+                            <button class="btn btn-secondary btn-sm" onclick="nbQuickAction('timeline')" title="Timeline">📅 Timeline</button>
+                            <button class="btn btn-secondary btn-sm" onclick="nbQuickAction('faq')" title="FAQ">💬 FAQ</button>
+                            <button class="btn btn-secondary btn-sm" onclick="nbQuickAction('todo')" title="TODO List">✅ TODO</button>
+                            <button class="btn btn-secondary btn-sm" onclick="nbQuickAction('quiz')" title="Bài kiểm tra (T-AI3)">📋 Quiz</button>
+                            <button class="btn btn-secondary btn-sm" onclick="nbQuickAction('glossary')" title="Từ điển thuật ngữ (T-AI4)">📖 Thuật ngữ</button>
+                            <button class="btn btn-secondary btn-sm" onclick="nbQuickAction('sentiment')" title="Phân tích cảm xúc (T-AI6)">💡 Cảm xúc</button>
+                            <button class="btn btn-secondary btn-sm" onclick="nbQuickAction('citation')" title="Trích dẫn học thuật (T-AI5)">🎓 Trích dẫn</button>
+                            <button class="btn btn-secondary btn-sm" onclick="openOverlay('podcastOverlay')" title="Tạo Podcast AI (T-C4)">🎙️ Podcast</button>
+                            <button class="btn btn-secondary btn-sm" onclick="openOverlay('notesOverlay')" title="Ghi chú & Ghim (T-C6)">📌 Ghim</button>
+                        </div>
+
+                        <!-- Smart Suggested Questions (T-C5) -->
+                        <div class="suggested-row" id="suggestedQuestions">
+                            <!-- Rendered by JS after source upload -->
+                        </div>
+
+                        <!-- Chat Messages -->
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="msg ai">
+                                <div class="msg-bubble">
+                                    Xin chào! Tôi là <strong>Notebook AI</strong> của TuongTanDigital. 👋<br><br>
+                                    Hãy thêm tài liệu vào <strong>Nguồn tài liệu</strong> bên trái, sau đó đặt câu hỏi cho tôi.<br><br>
+                                    Tôi có thể: <strong>Tóm tắt</strong>, <strong>Phân tích</strong>, <strong>Tạo Flashcard</strong>, <strong>Mind Map</strong>, <strong>Podcast</strong>, <strong>Quiz</strong> và nhiều hơn nữa!
+                                </div>
+                                <div class="msg-meta">🤖 Notebook AI</div>
+                            </div>
+                        </div>
+
+                        <!-- Token Estimate -->
+                        <div id="tokenEstimate" style="display:none;font-size:10px;color:var(--text3);padding:2px 4px"></div>
+
+                        <!-- Chat Input Row -->
+                        <div class="chat-input-row" style="flex-shrink:0">
+                            <!-- Voice Chat Button (T-AI8) -->
+                            <button class="btn-icon" id="voiceChatBtn" onclick="toggleVoiceChat()" title="Nói với AI (Voice Chat)" style="width:44px;height:44px;flex-shrink:0">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+                            </button>
+                            <textarea class="chat-input" id="chatInput" placeholder="Hỏi bất kỳ điều gì về tài liệu... (Ctrl+Enter gửi)" rows="1" oninput="autoResizeChatInput(this)" onkeydown="if(event.ctrlKey&&event.key==='Enter'){event.preventDefault();sendChatBtn()}"></textarea>
+                            <!-- Cancel Chat (T05) -->
+                            <button id="cancelChatBtn" class="btn-cancel" onclick="cancelChat()" style="display:none;width:44px;height:44px" title="Hủy">✕</button>
+                            <!-- Send Button -->
+                            <button class="chat-send" id="chatSendBtn" onclick="sendChatBtn()" title="Gửi (Ctrl+Enter)">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Document Viewer Panel for Split View (T-N9, T-C2) -->
+                    <div class="split-view-panel" id="splitViewPanel" style="display:none">
+                        <div class="card" style="height:100%">
+                            <div class="card-title" style="justify-content:space-between">
+                                <span>📄 XEM TÀI LIỆU</span>
+                                <button class="btn-icon" onclick="closeSplitViewPanel()" title="Đóng" style="width:28px;height:28px">✕</button>
+                            </div>
+                            <div id="splitViewContent" class="split-view-content">
+                                <div class="empty-st">Chọn nguồn tài liệu để xem tại đây</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB: STT ==================== -->
+        <div class="tab-panel" id="tab-stt">
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+                        NGUỒN AUDIO
+                        <button class="btn-icon" onclick="showHelpTooltip('stt')" title="Hướng dẫn" style="width:22px;height:22px;margin-left:auto">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- File Upload -->
+                    <div class="dropzone" id="sttDz" onclick="document.getElementById('sttFileInput').click()">
+                        <p>🎵 Kéo thả hoặc click chọn file audio</p>
+                        <small>MP3, WAV, OGG, M4A, WEBM — Tối đa 20MB</small>
+                        <input type="file" id="sttFileInput" style="display:none" accept=".mp3,.wav,.ogg,.m4a,.webm,.flac" onchange="onSttFile(this)">
+                    </div>
+                    <div class="file-chip" id="sttFileChip" style="display:none">
+                        <span id="sttFileName">...</span>
+                    </div>
+
+                    <!-- Record -->
+                    <div class="divider"></div>
+                    <div class="rec-wrap">
+                        <div class="rec-btn-circle" id="sttRecBtn" onclick="toggleSttRec()">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+                        </div>
+                        <div class="rec-label" id="sttRecLabel">TAP TO RECORD</div>
+                        <div class="timer" id="sttTimer">00:00</div>
+                    </div>
+
+                    <!-- Live STT (T18) -->
+                    <div class="divider"></div>
+                    <div style="text-align:center">
+                        <button class="btn btn-secondary" onclick="toggleLiveSTT()" id="liveSttBtn" style="width:100%">
+                            🎤 Real-time STT (Web Speech API)
+                        </button>
+                        <div id="liveSttInterim" style="margin-top:8px;min-height:30px;font-size:13px;line-height:1.6;text-align:left"></div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <!-- Process Button -->
+                    <div class="prog-wrap" id="sttProg">
+                        <div class="prog-bg"><div class="prog-fill" id="sttProgFill"></div></div>
+                        <div class="prog-txt" id="sttProgTxt"></div>
+                    </div>
+                    <button class="btn btn-primary" id="sttBtn" onclick="processStt()" style="margin-top:8px">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        BẮT ĐẦU PHIÊN ÂM AI
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div class="card-title" style="justify-content:space-between">
+                        <span>📝 KẾT QUẢ PHIÊN ÂM</span>
+                        <span id="sttBadge" class="badge" style="display:none"></span>
+                    </div>
+                    <textarea class="textarea" id="sttResult" rows="14" placeholder="Kết quả phiên âm sẽ xuất hiện tại đây..." readonly></textarea>
+                    <div id="sttWordCount" style="font-size:11px;color:var(--text3);text-align:right;margin-top:4px"></div>
+                    <div class="action-row" id="sttActions" style="display:none">
+                        <button class="btn btn-secondary btn-sm" onclick="copyBox('sttResult')">📋 Sao chép</button>
+                        <button class="btn btn-secondary btn-sm" onclick="dlBox('sttResult','phien_am_'+Date.now()+'.txt')">💾 Tải TXT</button>
+                        <button class="btn btn-success btn-sm" onclick="addToNotebook()">📚 Thêm vào Notebook</button>
+                        <button class="btn btn-secondary btn-sm" onclick="addHist('stt',STATE.sttFile?.name||'Ghi âm',document.getElementById('sttResult').value.substring(0,60),document.getElementById('sttResult').value)">📁 Lưu lịch sử</button>
+                        <button class="btn btn-danger btn-sm" onclick="clearStt()">🗑️ Xóa</button>
+                    </div>
+
+                    <!-- STT History -->
+                    <div class="divider"></div>
+                    <div class="card-title">📁 LỊCH SỬ PHIÊN ÂM</div>
+                    <div class="hist-list" id="sttHist">
+                        <div class="empty-st">Chưa có lịch sử phiên âm</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB: TTS ==================== -->
+        <div class="tab-panel" id="tab-tts">
+            <div class="card">
+                <!-- TTS Input Area -->
+                <div class="card-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5"/></svg>
+                    VĂN BẢN CẦN ĐỌC
+                    <button class="btn-icon" onclick="showHelpTooltip('tts')" title="Hướng dẫn" style="width:22px;height:22px;margin-left:auto">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    </button>
+                </div>
+                <textarea class="textarea" id="ttsInput" placeholder="Nhập văn bản cần đọc tại đây..." rows="6" oninput="updateTtsCharCount()"></textarea>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;flex-wrap:wrap;gap:6px">
+                    <div id="ttsCharCount" style="font-size:11px;color:var(--text3)">0 / 5000 ký tự</div>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap">
+                        <button class="btn btn-secondary btn-sm" onclick="loadTtsSample()">📄 Mẫu</button>
+                        <label class="btn btn-secondary btn-sm">
+                            📂 File <input type="file" style="display:none" accept=".txt,.md" onchange="loadTtsFile(this)">
+                        </label>
+                        <button class="btn btn-secondary btn-sm" onclick="aiEnhanceTts()">✨ AI Cải thiện</button>
+                        <button class="btn btn-secondary btn-sm" onclick="autoDetectTtsLang()" title="Tự động nhận diện ngôn ngữ">🌐 Auto Lang</button>
+                    </div>
+                </div>
+
+                <!-- Reading Display (T-TTS1) -->
+                <div class="tts-reading-display" id="ttsReadingDisplay">
+                    <div class="tts-reading-header">
+                        <span>📖 HIỂN THỊ VĂN BẢN ĐANG ĐỌC</span>
+                        <div class="tts-reading-progress">
+                            <div class="tts-reading-progress-bar" id="ttsReadingProgressBar"></div>
+                        </div>
+                    </div>
+                    <div class="tts-reading-content" id="ttsReadingContent">
+                        <span style="color:var(--text3);font-style:italic">Văn bản sẽ được highlight khi đọc...</span>
+                    </div>
+                </div>
+
+                <!-- Engine Selector (T-TTS2: Browser + Gemini cùng vị trí) -->
+                <div class="tts-engine-selector">
+                    <div class="tts-engine-tabs">
+                        <button class="tts-engine-tab active" id="ttsEngBrowserTab" onclick="switchTtsEngine('browser')">
+                            🌐 Giọng Trình duyệt
+                        </button>
+                        <button class="tts-engine-tab" id="ttsEngGeminiTab" onclick="switchTtsEngine('gemini')">
+                            ✨ Giọng Gemini AI (30 giọng)
+                        </button>
+                    </div>
+
+                    <!-- Browser TTS Panel -->
+                    <div class="tts-engine-panel active" id="ttsBrowserPanel">
+                        <label class="lbl">GIỌNG ĐỌC</label>
+                        <select class="select" id="voiceSel" style="margin-bottom:10px"></select>
+                        <div class="tts-controls">
+                            <div class="slider-row">
+                                <label>Tốc độ <span id="rateVal">1.0</span>x</label>
+                                <input type="range" id="ttsRate" min="0.5" max="2" step="0.1" value="1" oninput="document.getElementById('rateVal').textContent=this.value">
+                            </div>
+                            <div class="slider-row">
+                                <label>Cao độ <span id="pitchVal">1.0</span></label>
+                                <input type="range" id="ttsPitch" min="0" max="2" step="0.1" value="1" oninput="document.getElementById('pitchVal').textContent=this.value">
+                            </div>
+                            <div class="slider-row">
+                                <label>Âm lượng <span id="volVal">1.0</span></label>
+                                <input type="range" id="ttsVol" min="0" max="1" step="0.05" value="1" oninput="document.getElementById('volVal').textContent=this.value">
+                            </div>
+                        </div>
+                        <div class="tts-players">
+                            <button class="player-btn pbtn-play" onclick="startTts()">▶ Đọc</button>
+                            <button class="player-btn pbtn-pause" onclick="pauseTts()">⏸ Tạm dừng</button>
+                            <button class="player-btn pbtn-stop" onclick="stopTts()">⏹ Dừng</button>
+                        </div>
+                        <div id="ttsStatsRow" style="display:none;margin-top:8px;font-size:11px;color:var(--text3)">
+                            <span id="ttsStats"></span>
+                        </div>
+                    </div>
+
+                    <!-- Gemini AI TTS Panel -->
+                    <div class="tts-engine-panel" id="ttsGeminiPanel">
+                        <div class="ai-tts-title">
+                            ✨ GEMINI AI TTS — 30 Giọng Cao Cấp
+                        </div>
+                        <div class="mini-tabs" id="ttsMiniTabs">
+                            <button class="mini-tab active" onclick="switchMiniTab('ttsVoices','ttsMiniTabs')">🎤 Chọn giọng</button>
+                            <button class="mini-tab" onclick="switchMiniTab('ttsStyle','ttsMiniTabs')">🎨 Style</button>
+                            <button class="mini-tab" onclick="switchMiniTab('ttsModel','ttsMiniTabs')">⚙️ Model</button>
+                        </div>
+                        <div class="mini-panel active" id="mp-ttsVoices">
+                            <div class="tts-voice-grid" id="geminiVoiceGrid"></div>
+                        </div>
+                        <div class="mini-panel" id="mp-ttsStyle">
+                            <label class="lbl">PROMPT PHONG CÁCH (tuỳ chọn)</label>
+                            <textarea class="textarea" id="ttsStylePrompt" rows="4" placeholder="VD: Đọc với giọng trầm ấm, chậm rãi như kể chuyện...&#10;Style: Professional news anchor&#10;Pacing: Slow and clear"></textarea>
+                        </div>
+                        <div class="mini-panel" id="mp-ttsModel">
+                            <label class="lbl">MODEL GEMINI TTS</label>
+                            <select class="select" id="ttsMdlSel">
+                                <option value="gemini-2.5-flash-preview-tts">⚡ Gemini 2.5 Flash TTS (Khuyên dùng)</option>
+                                <option value="gemini-2.5-pro-preview-tts">🏆 Gemini 2.5 Pro TTS (Chất lượng cao nhất)</option>
+                            </select>
+                            <div style="margin-top:8px;font-size:11px;color:var(--text3)">
+                                Flash TTS nhanh hơn, Pro TTS tự nhiên hơn cho văn bản dài.
+                            </div>
+                        </div>
+                        <div class="prog-wrap" id="geminiTtsProg" style="margin-top:10px">
+                            <div class="prog-bg"><div class="prog-fill" id="geminiTtsProgFill"></div></div>
+                            <div class="prog-txt" id="geminiTtsProgTxt"></div>
+                        </div>
+                        <button class="btn btn-primary" id="geminiTtsBtn" onclick="generateGeminiTts()" style="margin-top:12px">
+                            ✨ TẠO GIỌNG ĐỌC AI & TẢI VỀ
+                        </button>
+                        <div id="geminiAudioPlayer" style="display:none;margin-top:10px">
+                            <audio id="geminiAudio" controls style="width:100%"></audio>
+                            <button class="btn btn-success btn-sm" id="geminiDlBtn" style="width:100%;margin-top:6px">💾 Tải file WAV</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB: RECORD ==================== -->
+        <div class="tab-panel" id="tab-rec">
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+                        GHI HÌNH / GHI ÂM MÀN HÌNH
+                        <button class="btn-icon" onclick="showHelpTooltip('rec')" title="Hướng dẫn" style="width:22px;height:22px;margin-left:auto">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        </button>
+                    </div>
+                    <div class="video-wrap">
+                        <div class="video-ph" id="vPh">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+                            <span>Nhấn "Bắt đầu" để ghi màn hình</span>
+                        </div>
+                        <video id="screenLive" autoplay muted style="display:none"></video>
+                        <video id="screenPb" controls style="display:none"></video>
+                        <div class="rec-badge" id="recBadge">🔴 REC</div>
+                    </div>
+                    <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:6px" id="screenTimer">00:00</div>
+
+                    <!-- Help Panel for Record (T-F1 fix) -->
+                    <div class="rec-help-panel" id="recHelpPanel">
+                        <div class="rec-help-title">📋 Hướng dẫn ghi & tạo biên bản:</div>
+                        <div class="rec-help-steps">
+                            <div class="rec-help-step"><span class="rec-help-num">1</span> Chọn nguồn âm (hệ thống / mic) → Nhấn <strong>"Bắt đầu ghi"</strong></div>
+                            <div class="rec-help-step"><span class="rec-help-num">2</span> Nói/họp bình thường — AI sẽ ghi lại toàn bộ</div>
+                            <div class="rec-help-step"><span class="rec-help-num">3</span> Nhấn <strong>"Dừng lại"</strong> → AI tự động tạo biên bản cuộc họp</div>
+                        </div>
+                    </div>
+
+                    <div class="audio-opts">
+                        <label class="aoption"><input type="checkbox" id="capSys" checked> 🔊 Âm thanh hệ thống</label>
+                        <label class="aoption"><input type="checkbox" id="capMic"> 🎤 Microphone</label>
+                    </div>
+                    <div class="rec-ctrls">
+                        <button class="rbtn rbtn-start" id="rStart" onclick="startRec()">⏺ Bắt đầu ghi</button>
+                        <button class="rbtn rbtn-stop" id="rStop" onclick="stopRec()" disabled>⏹ Dừng lại</button>
+                        <button class="rbtn rbtn-dl" id="rDl" onclick="dlRec()" disabled>💾 Tải video</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title" style="justify-content:space-between">
+                        <span>📋 BIÊN BẢN CUỘC HỌP AI</span>
+                        <span id="minBadge" class="badge" style="display:none"></span>
+                    </div>
+                    <div style="margin-bottom:10px">
+                        <label class="lbl">TEMPLATE BIÊN BẢN</label>
+                        <select class="select" id="minutesTemplate">
+                            <option value="full">📄 Đầy đủ (Tiêu đề + Tóm tắt + Quyết định + TODO)</option>
+                            <option value="todo">✅ Chỉ TODO & Action Items</option>
+                            <option value="summary">📝 Tóm tắt nhanh</option>
+                            <option value="formal">🏛️ Chính thức (Formal Meeting Minutes)</option>
+                        </select>
+                    </div>
+                    <div class="prog-wrap" id="recProg">
+                        <div class="prog-bg"><div class="prog-fill" id="recProgFill"></div></div>
+                        <div class="prog-txt" id="recProgTxt"></div>
+                    </div>
+                    <div class="minutes-out" id="minutesOut">
+                        <span style="color:var(--text3);font-style:italic">Biên bản họp sẽ tự động tạo sau khi dừng ghi hình...</span>
+                    </div>
+                    <div class="action-row" style="margin-top:10px">
+                        <button class="btn btn-secondary btn-sm" onclick="copyMin()">📋 Sao chép</button>
+                        <button class="btn btn-secondary btn-sm" onclick="dlMin()">💾 Tải TXT</button>
+                        <button class="btn btn-secondary btn-sm" onclick="exportMinutesMd()">📝 Tải MD</button>
+                        <button class="btn btn-success btn-sm" onclick="addMinutesToNotebook()">📚 Thêm vào Notebook</button>
+                        <button class="btn btn-primary btn-sm" onclick="regenMinutes()">🔄 Tạo lại</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB: CONVERT ==================== -->
+        <div class="tab-panel" id="tab-cvt">
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                        FILE / VĂN BẢN CẦN XỬ LÝ
+                        <button class="btn-icon" onclick="showHelpTooltip('cvt')" title="Hướng dẫn" style="width:22px;height:22px;margin-left:auto">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        </button>
+                    </div>
+                    <!-- Batch mode toggle -->
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+                        <label class="aoption" style="flex:none">
+                            <input type="checkbox" id="batchMode" onchange="toggleBatchMode(this.checked)">
+                            📦 Batch Mode (nhiều file)
+                        </label>
+                        <span id="batchCount" style="font-size:11px;color:var(--primary);display:none"></span>
+                    </div>
+                    <!-- Single file mode -->
+                    <div id="cvtSingleMode">
+                        <div class="dropzone" id="cvtDz" onclick="document.getElementById('cvtFileInp').click()">
+                            <p>📎 Kéo thả hoặc click chọn file</p>
+                            <small>PDF, TXT, MD, DOCX, JPG, PNG, WEBP — Tối đa 20MB</small>
+                            <input type="file" id="cvtFileInp" style="display:none" accept=".pdf,.txt,.md,.docx,.jpg,.jpeg,.png,.webp,.gif" onchange="onCvtFile(this)">
+                        </div>
+                        <div class="file-chip" id="cvtFileChip" style="display:none">
+                            <span id="cvtFileName">...</span>
+                            <span id="cvtFileSizeWarn" style="color:var(--warning);font-size:10px;margin-left:6px;display:none">⚠ File lớn có thể chậm</span>
+                        </div>
+                    </div>
+                    <!-- Batch file mode -->
+                    <div id="cvtBatchMode" style="display:none">
+                        <div class="dropzone" id="cvtBatchDz" onclick="document.getElementById('cvtBatchInp').click()">
+                            <p>📦 Kéo thả nhiều file cùng lúc</p>
+                            <small>Xử lý tuần tự — Tải về tất cả kết quả</small>
+                            <input type="file" id="cvtBatchInp" multiple accept=".pdf,.txt,.md,.docx,.jpg,.jpeg,.png,.webp" onchange="onBatchFiles(this)">
+                        </div>
+                        <div id="batchFileList" style="margin-top:8px;display:flex;flex-direction:column;gap:4px"></div>
+                    </div>
+                    <!-- Text input fallback -->
+                    <div style="margin-top:10px">
+                        <label class="lbl" style="cursor:pointer" onclick="toggleCvtText()">
+                            ✏️ HOẶC NHẬP VĂN BẢN TRỰC TIẾP <span id="cvtTextToggleIcon">▼</span>
+                        </label>
+                        <textarea class="textarea" id="cvtTextInp" placeholder="Dán nội dung văn bản tại đây..." rows="5" style="display:none;margin-top:6px"></textarea>
+                    </div>
+
+                    <!-- OCR Pre-processing (T-N8) -->
+                    <div id="ocrPreprocessPanel" style="display:none;margin-top:10px">
+                        <label class="aoption">
+                            <input type="checkbox" id="ocrPreprocess" checked>
+                            🔍 Tăng chất lượng ảnh trước khi OCR
+                        </label>
+                        <div id="ocrPreview" style="display:none;margin-top:8px">
+                            <div style="display:flex;gap:8px">
+                                <div style="flex:1;text-align:center">
+                                    <div style="font-size:10px;color:var(--text3);margin-bottom:4px">Gốc</div>
+                                    <canvas id="ocrOriginal" style="max-width:100%;border-radius:6px;border:1px solid var(--border)"></canvas>
+                                </div>
+                                <div style="flex:1;text-align:center">
+                                    <div style="font-size:10px;color:var(--text3);margin-bottom:4px">Đã xử lý</div>
+                                    <canvas id="ocrProcessed" style="max-width:100%;border-radius:6px;border:1px solid var(--border)"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div style="margin-top:14px">
+                        <label class="lbl">CHỌN CHỨC NĂNG AI</label>
+                        <div class="action-chips" id="cvtActionChips">
+                            <div class="action-chip active" onclick="setCvtAction('extract',this)">📄 Trích xuất</div>
+                            <div class="action-chip" onclick="setCvtAction('summary',this)">📝 Tóm tắt</div>
+                            <div class="action-chip" onclick="setCvtAction('analyze',this)">🔍 Phân tích sâu</div>
+                            <div class="action-chip" onclick="setCvtAction('translate',this)">🌐 Dịch thuật</div>
+                            <div class="action-chip" onclick="setCvtAction('keypoints',this)">🎯 Ý chính</div>
+                            <div class="action-chip" onclick="setCvtAction('questions',this)">❓ Câu hỏi</div>
+                            <div class="action-chip" onclick="setCvtAction('rewrite',this)">✍️ Viết lại</div>
+                            <div class="action-chip" onclick="setCvtAction('table',this)">📊 Bảng dữ liệu</div>
+                        </div>
+                        <!-- Translate target -->
+                        <div id="translateOpts" style="display:none;margin-bottom:10px">
+                            <label class="lbl">NGÔN NGỮ ĐÍCH</label>
+                            <select class="select" id="translateTarget">
+                                <option value="tiếng Việt">🇻🇳 Tiếng Việt</option>
+                                <option value="tiếng Anh">🇬🇧 Tiếng Anh</option>
+                                <option value="tiếng Nhật">🇯🇵 Tiếng Nhật</option>
+                                <option value="tiếng Trung">🇨🇳 Tiếng Trung</option>
+                                <option value="tiếng Hàn">🇰🇷 Tiếng Hàn</option>
+                                <option value="tiếng Pháp">🇫🇷 Tiếng Pháp</option>
+                            </select>
+                        </div>
+                        <div class="prog-wrap" id="cvtProg">
+                            <div class="prog-bg"><div class="prog-fill" id="cvtProgFill"></div></div>
+                            <div class="prog-txt" id="cvtProgTxt"></div>
+                        </div>
+                        <div style="display:flex;gap:8px;margin-top:10px">
+                            <button class="btn btn-primary" id="cvtBtn" onclick="processCvt()" style="flex:1">
+                                ⚡ XỬ LÝ VỚI AI
+                            </button>
+                            <button id="cancelCvtBtn" class="btn btn-danger btn-sm" onclick="cancelCvt()" style="display:none;width:auto">✕ Hủy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title" style="justify-content:space-between">
+                        <span>🤖 KẾT QUẢ PHÂN TÍCH AI</span>
+                        <span id="cvtBadge" class="badge" style="display:none"></span>
+                    </div>
+                    <!-- Result search -->
+                    <div id="cvtResultSearch" style="display:none;margin-bottom:8px">
+                        <input type="text" class="input" placeholder="🔍 Tìm trong kết quả..." oninput="highlightResultSearch(this.value,'cvtResult')" style="font-size:12px">
+                    </div>
+                    <div class="result-box" id="cvtResult">
+                        <span class="result-placeholder">Kết quả phân tích AI sẽ xuất hiện tại đây...</span>
+                    </div>
+                    <div id="cvtWordCount" style="font-size:11px;color:var(--text3);text-align:right;margin-top:4px"></div>
+                    <div class="action-row" style="margin-top:10px">
+                        <button class="btn btn-secondary btn-sm" onclick="copyBox('cvtResult')">📋 Sao chép</button>
+                        <button class="btn btn-secondary btn-sm" onclick="dlBox('cvtResult','ket_qua_ai_'+Date.now()+'.txt')">💾 Tải TXT</button>
+                        <button class="btn btn-secondary btn-sm" onclick="exportResultDocx()">📄 Tải DOCX</button>
+                        <button class="btn btn-secondary btn-sm" onclick="toggleResultSearch()">🔍 Tìm kiếm</button>
+                        <button class="btn btn-success btn-sm" onclick="addCvtToNotebook()">📚 Thêm vào Notebook</button>
+                        <button class="btn btn-secondary btn-sm" onclick="addHist('cvt',STATE.cvtFile?.name||'Văn bản',document.getElementById('cvtResult').innerText.substring(0,60),document.getElementById('cvtResult').innerText)">📁 Lưu lịch sử</button>
+                    </div>
+                    <!-- Batch results area -->
+                    <div id="batchResultsArea" style="display:none;margin-top:14px">
+                        <div class="card-title">📦 KẾT QUẢ BATCH</div>
+                        <div id="batchResultsList" style="display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto"></div>
+                        <button class="btn btn-success btn-sm" onclick="downloadAllBatch()" style="margin-top:8px;width:100%">💾 Tải tất cả</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB: SETTINGS ==================== -->
+        <div class="tab-panel" id="tab-settings">
+            <div class="settings-grid" style="max-width:800px;margin:0 auto">
+                <div class="setting-block">
+                    <h4>🎨 Bảng màu chủ đề</h4>
+                    <div class="theme-btns">
+                        <div class="theme-btn active" style="background:linear-gradient(135deg,#4F46E5,#7C3AED)" onclick="setTheme('default',this)" title="Tím (mặc định)"></div>
+                        <div class="theme-btn" style="background:linear-gradient(135deg,#0284C7,#0EA5E9)" onclick="setTheme('ocean',this)" title="Đại dương"></div>
+                        <div class="theme-btn" style="background:linear-gradient(135deg,#16A34A,#15803D)" onclick="setTheme('forest',this)" title="Rừng xanh"></div>
+                        <div class="theme-btn" style="background:linear-gradient(135deg,#E11D48,#DB2777)" onclick="setTheme('rose',this)" title="Hồng đỏ"></div>
+                        <div class="theme-btn" style="background:linear-gradient(135deg,#D97706,#F59E0B)" onclick="setTheme('amber',this)" title="Vàng hổ phách"></div>
+                    </div>
+                </div>
+                <div class="setting-block">
+                    <h4>🌓 Chế độ sáng / tối</h4>
+                    <div style="display:flex;gap:8px">
+                        <button class="font-btn" id="btnLight" onclick="setDark(false)">☀️ Sáng</button>
+                        <button class="font-btn active" id="btnDark" onclick="setDark(true)">🌙 Tối</button>
+                        <button class="font-btn" id="btnAuto" onclick="setDarkAuto()">🔄 Tự động</button>
+                    </div>
+                </div>
+                <div class="setting-block">
+                    <h4>🖼️ Hình nền ứng dụng</h4>
+                    <div class="bg-btns" id="bgBtns">
+                        <div class="bg-btn active" style="background:linear-gradient(135deg,#FFF7ED,#FAE8FF,#DBEAFE)" onclick="setBg('default',this)">Mặc định</div>
+                        <div class="bg-btn" style="background:linear-gradient(135deg,#0F172A,#1E1B4B,#0F172A)" onclick="setBg('dark-cosmos',this)">Cosmos</div>
+                        <div class="bg-btn" style="background:linear-gradient(135deg,#F0FDF4,#DCFCE7,#F7FEE7)" onclick="setBg('nature',this)">Thiên nhiên</div>
+                        <div class="bg-btn" style="background:linear-gradient(135deg,#FFF1F2,#FFE4E6,#FDF2F8)" onclick="setBg('sakura',this)">Sakura</div>
+                        <div class="bg-btn" style="background:linear-gradient(135deg,#F0F9FF,#E0F2FE,#EFF6FF)" onclick="setBg('sky',this)">Bầu trời</div>
+                        <div class="bg-btn" style="background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)" onclick="setBg('midnight',this)">Midnight</div>
+                    </div>
+                </div>
+                <div class="setting-block">
+                    <h4>🔤 Cỡ chữ</h4>
+                    <div class="font-btns">
+                        <button class="font-btn" onclick="setFontSize(13,this)">Nhỏ</button>
+                        <button class="font-btn active" onclick="setFontSize(15,this)">Vừa</button>
+                        <button class="font-btn" onclick="setFontSize(17,this)">Lớn</button>
+                    </div>
+                </div>
+                <!-- Font Selector (T-U10) -->
+                <div class="setting-block">
+                    <h4>✒️ Font chữ</h4>
+                    <div class="font-btns" style="flex-wrap:wrap">
+                        <button class="font-btn active" onclick="setAppFont('system',this)">System</button>
+                        <button class="font-btn" onclick="setAppFont('inter',this)">Inter</button>
+                        <button class="font-btn" onclick="setAppFont('merriweather',this)">Merriweather</button>
+                        <button class="font-btn" onclick="setAppFont('firacode',this)">Fira Code</button>
+                        <button class="font-btn" onclick="setAppFont('bevietnam',this)">Be Vietnam</button>
+                    </div>
+                </div>
+                <div class="setting-block">
+                    <h4>📊 Thống kê sử dụng</h4>
+                    <div id="usageStats" style="font-size:12px;color:var(--text2);line-height:1.8">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+                <div class="setting-block" style="grid-column:1/-1">
+                    <h4>ℹ️ Về ứng dụng</h4>
+                    <p style="font-size:12px;color:var(--text2);line-height:1.7">
+                        <strong>TuongTanDigital-AI</strong> — Bộ công cụ AI công việc lấy cảm hứng từ <strong>NotebookLM</strong> của Google.<br>
+                        Kiến trúc RAG thực sự — Gemini 2.5 API — 100% miễn phí — Không cần backend<br>
+                        <span style="color:var(--text3)">© 2025 <strong>TuongTanDigital</strong>. All rights reserved.</span>
+                    </p>
+                    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+                        <a href="https://aistudio.google.com/app/apikey" target="_blank" class="btn btn-secondary btn-sm">🔑 Lấy API Key miễn phí</a>
+                        <button class="btn btn-secondary btn-sm" onclick="openOverlay('helpOverlay')">📘 Hướng dẫn sử dụng</button>
+                        <button class="btn btn-secondary btn-sm" onclick="openOverlay('onboardOverlay')">🎓 Onboarding Tour</button>
+                        <button class="btn btn-secondary btn-sm" onclick="openOverlay('shortcutOverlay')">⌨️ Phím tắt</button>
+                        <button class="btn btn-secondary btn-sm" onclick="openOverlay('historyOverlay')">📁 Toàn bộ lịch sử</button>
+                        <button class="btn btn-danger btn-sm" onclick="resetAllSettings()">🔄 Reset toàn bộ cài đặt</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ===== BOTTOM NAVIGATION BAR — MOBILE (T-U1) ===== -->
+    <nav class="bottom-nav" id="bottomNav">
+        <button class="bottom-nav-item active" onclick="switchTab('notebook',this)" data-tab="notebook">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <span>Notebook</span>
+        </button>
+        <button class="bottom-nav-item" onclick="switchTab('stt',this)" data-tab="stt">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+            <span>STT</span>
+        </button>
+        <button class="bottom-nav-item" onclick="switchTab('tts',this)" data-tab="tts">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+            <span>TTS</span>
+        </button>
+        <button class="bottom-nav-item" onclick="switchTab('rec',this)" data-tab="rec">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+            <span>Ghi hình</span>
+        </button>
+        <button class="bottom-nav-item" onclick="switchTab('cvt',this)" data-tab="cvt">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/></svg>
+            <span>Convert</span>
+        </button>
+        <button class="bottom-nav-item" onclick="switchTab('settings',this)" data-tab="settings">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4"/></svg>
+            <span>Cài đặt</span>
+        </button>
+    </nav>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="app-footer" id="appFooter">
+        © 2025 <strong style="color:var(--primary)">TuongTanDigital</strong> —
+        TuongTanDigital-AI — AI Suite Powered by Gemini —
+        All rights reserved
+    </footer>
+
+    <!-- ===== TOAST CONTAINER ===== -->
+    <div class="toast-wrap" id="toastWrap"></div>
+
+    <!-- ============================================= -->
+    <!-- ===== ALL OVERLAYS / POPUPS BELOW ===== -->
+    <!-- ============================================= -->
+
+    <!-- ===== OVERLAY: API KEY MANAGER ===== -->
+    <div class="overlay" id="apiOverlay">
+        <div class="popup">
+            <div class="popup-header">
+                <h3>🔑 Quản lý API Keys</h3>
+                <button class="popup-close" onclick="closeOverlay('apiOverlay')">✕</button>
+            </div>
+            <p style="font-size:12px;color:var(--text2);margin-bottom:12px">
+                Thêm nhiều Gemini API Key miễn phí. Hệ thống tự động xoay key khi bị rate-limit.
+                <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--primary);font-weight:700">👉 Lấy key miễn phí tại đây</a>
+            </p>
+            <div class="key-list" id="keyList"></div>
+            <div class="add-key-row" style="margin-top:8px">
+                <input type="text" class="input" id="newKeyInput" placeholder="Dán API Key tại đây..." style="flex:1">
+                <button class="btn btn-primary btn-sm" onclick="addApiKey()">➕ Thêm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: URL SOURCE ===== -->
+    <div class="overlay" id="urlSourceOverlay">
+        <div class="popup">
+            <div class="popup-header">
+                <h3>🔗 Thêm nguồn từ URL</h3>
+                <button class="popup-close" onclick="closeOverlay('urlSourceOverlay')">✕</button>
+            </div>
+            <label class="lbl">NHẬP URL TRANG WEB</label>
+            <input type="url" class="input" id="urlSourceInput" placeholder="https://example.com/article...">
+            <div style="font-size:11px;color:var(--text3);margin-top:6px">
+                💡 Gemini AI sẽ cố gắng truy cập và phân tích nội dung URL này
+            </div>
+            <button class="btn btn-primary" onclick="addUrlSource()" style="margin-top:12px;width:100%">
+                ➕ Thêm URL vào nguồn
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: TEXT SOURCE (T-F2: Fix "Ghi chú" → "Nhập văn bản") ===== -->
+    <div class="overlay" id="textSourceOverlay">
+        <div class="popup popup-lg">
+            <div class="popup-header">
+                <h3>📝 Nhập văn bản trực tiếp</h3>
+                <button class="popup-close" onclick="closeOverlay('textSourceOverlay')">✕</button>
+            </div>
+            <label class="lbl">TÊN NGUỒN</label>
+            <input type="text" class="input" id="textSourceName" placeholder="VD: Ghi chú bài giảng, Bài viết..." style="margin-bottom:10px">
+            <label class="lbl">NỘI DUNG VĂN BẢN <span id="textSourceCharCount" style="color:var(--text3);font-weight:400">(0 / 50,000)</span></label>
+            <textarea class="textarea" id="textSourceContent" rows="12" placeholder="Dán nội dung tài liệu, bài viết, ghi chú... vào đây. Hỗ trợ tối đa 50,000 ký tự." oninput="updateTextSourceCount()" style="min-height:200px"></textarea>
+            <div style="display:flex;gap:8px;margin-top:12px">
+                <button class="btn btn-secondary btn-sm" onclick="pasteFromClipboard('textSourceContent')">📋 Dán từ clipboard</button>
+                <button class="btn btn-primary" onclick="addTextSource()" style="flex:1">
+                    ➕ Thêm vào nguồn tài liệu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: YOUTUBE SOURCE (T-N2) ===== -->
+    <div class="overlay" id="youtubeSourceOverlay">
+        <div class="popup">
+            <div class="popup-header">
+                <h3>🎬 Nhập transcript YouTube</h3>
+                <button class="popup-close" onclick="closeOverlay('youtubeSourceOverlay')">✕</button>
+            </div>
+            <label class="lbl">URL VIDEO YOUTUBE</label>
+            <input type="url" class="input" id="youtubeUrlInput" placeholder="https://www.youtube.com/watch?v=...">
+            <div style="font-size:11px;color:var(--text3);margin-top:6px">
+                💡 AI sẽ phân tích URL và trích xuất transcript video
+            </div>
+            <div class="prog-wrap" id="ytProg">
+                <div class="prog-bg"><div class="prog-fill" id="ytProgFill"></div></div>
+                <div class="prog-txt" id="ytProgTxt"></div>
+            </div>
+            <button class="btn btn-primary" onclick="addYoutubeSource()" style="margin-top:12px;width:100%">
+                🎬 Trích xuất & Thêm vào nguồn
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: EXPORT NOTEBOOK (T07) ===== -->
+    <div class="overlay" id="exportOverlay">
+        <div class="popup">
+            <div class="popup-header">
+                <h3>📤 Xuất / Nhập Notebook</h3>
+                <button class="popup-close" onclick="closeOverlay('exportOverlay')">✕</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                <button class="btn btn-secondary" onclick="exportNotebook('md')">📝 Xuất Markdown</button>
+                <button class="btn btn-secondary" onclick="exportNotebook('txt')">📄 Xuất TXT</button>
+                <button class="btn btn-secondary" onclick="exportNotebook('json')">💾 Xuất JSON Session</button>
+                <button class="btn btn-secondary" onclick="exportNotebook('html')">🌐 Xuất HTML Snapshot</button>
+                <button class="btn btn-secondary" onclick="exportNotebook('docx')">📄 Xuất DOCX</button>
+                <button class="btn btn-success" onclick="importNotebookSession()">📥 Nhập JSON Session</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: FLASHCARD (T-F3: tối đa 50 thẻ) ===== -->
+    <div class="overlay" id="flashcardOverlay">
+        <div class="popup popup-lg">
+            <div class="popup-header">
+                <h3>🃏 Flashcard từ tài liệu</h3>
+                <button class="popup-close" onclick="closeOverlay('flashcardOverlay')">✕</button>
+            </div>
+            <!-- Flashcard count slider -->
+            <div style="margin-bottom:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+                <label class="lbl" style="margin-bottom:0">SỐ THẺ:</label>
+                <input type="range" id="flashcardCountSlider" min="10" max="50" step="10" value="10" oninput="document.getElementById('fcCountVal').textContent=this.value" style="flex:1;min-width:120px;accent-color:var(--primary)">
+                <span id="fcCountVal" style="font-size:14px;font-weight:800;color:var(--primary)">10</span> thẻ
+                <div style="display:flex;gap:6px">
+                    <button class="btn btn-secondary btn-sm" id="fcFilterAll" onclick="filterFlashcards('all')">Tất cả</button>
+                    <button class="btn btn-secondary btn-sm" id="fcFilterUnlearned" onclick="filterFlashcards('unlearned')">Chưa thuộc</button>
+                    <button class="btn btn-secondary btn-sm" id="fcFilterMastered" onclick="filterFlashcards('mastered')">Đã thuộc</button>
+                </div>
+            </div>
+            <div id="flashcardContent">
+                <div class="empty-st">Nhấn "🃏 Flashcard" trong Quick Actions để tạo</div>
+            </div>
+            <!-- Export Flashcard -->
+            <div style="margin-top:12px;display:flex;gap:8px">
+                <button class="btn btn-secondary btn-sm" onclick="exportFlashcards('csv')">📄 Xuất CSV</button>
+                <button class="btn btn-secondary btn-sm" onclick="exportFlashcards('json')">💾 Xuất JSON</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: QUIZ (T-AI3) ===== -->
+    <div class="overlay" id="quizOverlay">
+        <div class="popup popup-lg">
+            <div class="popup-header">
+                <h3>📋 Bài kiểm tra trắc nghiệm</h3>
+                <button class="popup-close" onclick="closeOverlay('quizOverlay')">✕</button>
+            </div>
+            <div id="quizContent">
+                <div class="empty-st">Nhấn "📋 Quiz" trong Quick Actions để tạo bài kiểm tra</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: PODCAST (T-C4) ===== -->
+    <div class="overlay" id="podcastOverlay">
+        <div class="popup popup-lg">
+            <div class="popup-header">
+                <h3>🎙️ AI Podcast / Audio Overview</h3>
+                <button class="popup-close" onclick="closeOverlay('podcastOverlay')">✕</button>
+            </div>
+            <p style="font-size:12px;color:var(--text2);margin-bottom:12px">
+                Tạo podcast 2 người dẫn thảo luận về tài liệu của bạn — giống tính năng Audio Overview của NotebookLM.
+            </p>
+            <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+                <div style="flex:1;min-width:140px">
+                    <label class="lbl">👤 HOST</label>
+                    <input type="text" class="input" id="podcastHostName" value="Minh" placeholder="Tên host">
+                    <select class="select" id="podcastHostVoice" style="margin-top:6px">
+                        <!-- Populated by JS from GEMINI_VOICES -->
+                    </select>
+                </div>
+                <div style="flex:1;min-width:140px">
+                    <label class="lbl">👤 GUEST</label>
+                    <input type="text" class="input" id="podcastGuestName" value="Lan" placeholder="Tên guest">
+                    <select class="select" id="podcastGuestVoice" style="margin-top:6px">
+                        <!-- Populated by JS from GEMINI_VOICES -->
+                    </select>
+                </div>
+            </div>
+            <div style="margin-bottom:12px">
+                <label class="lbl">PHONG CÁCH</label>
+                <select class="select" id="podcastStyle">
+                    <option value="casual">😊 Thoải mái, vui vẻ</option>
+                    <option value="professional">💼 Chuyên nghiệp, nghiêm túc</option>
+                    <option value="educational">🎓 Giáo dục, giải thích rõ ràng</option>
+                    <option value="debate">⚖️ Tranh luận, đa góc nhìn</option>
+                </select>
+            </div>
+            <div class="prog-wrap" id="podcastProg">
+                <div class="prog-bg"><div class="prog-fill" id="podcastProgFill"></div></div>
+                <div class="prog-txt" id="podcastProgTxt"></div>
+            </div>
+            <div id="podcastScript" class="result-box" style="display:none;max-height:300px;margin-bottom:12px"></div>
+            <div id="podcastAudioPlayer" style="display:none;margin-bottom:12px">
+                <audio id="podcastAudio" controls style="width:100%"></audio>
+            </div>
+            <div style="display:flex;gap:8px">
+                <button class="btn btn-primary" onclick="generatePodcast()" style="flex:1" id="podcastGenBtn">
+                    🎙️ Tạo Podcast AI
+                </button>
+                <button class="btn btn-success btn-sm" id="podcastDlBtn" onclick="downloadPodcast()" style="display:none">
+                    💾 Tải WAV
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: NOTES BOARD (T-C6) ===== -->
+    <div class="overlay" id="notesOverlay">
+        <div class="popup popup-lg">
+            <div class="popup-header">
+                <h3>📌 Ghi chú & Ghim</h3>
+                <button class="popup-close" onclick="closeOverlay('notesOverlay')">✕</button>
+            </div>
+            <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+                <button class="btn btn-primary btn-sm" onclick="addManualNote()">➕ Thêm ghi chú</button>
+                <button class="btn btn-secondary btn-sm" onclick="exportNotes()">📤 Xuất tất cả</button>
+                <div style="flex:1"></div>
+                <select class="select" id="noteTagFilter" onchange="filterNotes(this.value)" style="width:auto;font-size:11px">
+                    <option value="all">Tất cả</option>
+                    <option value="important">🔴 Quan trọng</option>
+                    <option value="review">🟡 Cần xem lại</option>
+                    <option value="idea">🟢 Ý tưởng</option>
+                    <option value="reference">🔵 Tham khảo</option>
+                </select>
+            </div>
+            <div id="notesList" class="notes-list">
+                <div class="empty-st">Chưa có ghi chú. Ghim câu trả lời AI hoặc thêm ghi chú thủ công.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: DOCUMENT VIEWER (T-C2) ===== -->
+    <div class="overlay" id="docViewerOverlay">
+        <div class="popup popup-xl">
+            <div class="popup-header">
+                <h3 id="docViewerTitle">📄 Xem tài liệu</h3>
+                <button class="popup-close" onclick="closeOverlay('docViewerOverlay')">✕</button>
+            </div>
+            <div id="docViewerContent" style="min-height:400px;max-height:70vh;overflow:auto">
+                <!-- Rendered by JS: PDF canvas, image, text -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: MIND MAP (T-N1) ===== -->
+    <div class="overlay" id="mindmapOverlay">
+        <div class="popup popup-xl">
+            <div class="popup-header">
+                <h3>🧠 Visual Mind Map</h3>
+                <div style="display:flex;gap:6px">
+                    <button class="btn btn-secondary btn-sm" onclick="exportMindmapPng()">📷 Xuất PNG</button>
+                    <button class="btn btn-secondary btn-sm" onclick="toggleMindmapFullscreen()">⛶ Toàn màn hình</button>
+                    <button class="popup-close" onclick="closeOverlay('mindmapOverlay')">✕</button>
+                </div>
+            </div>
+            <div id="mindmapContainer" class="mindmap-container">
+                <!-- SVG mind map rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: COMMAND PALETTE (T-N3) ===== -->
+    <div class="overlay" id="cmdPaletteOverlay" style="align-items:flex-start;padding-top:80px">
+        <div class="popup" style="max-width:560px">
+            <input type="text" class="input cmd-palette-input" id="cmdPaletteInput" placeholder="🔍 Tìm lệnh, chức năng, nguồn..." oninput="filterCommandPalette(this.value)" onkeydown="handleCmdPaletteKey(event)" autofocus>
+            <div class="cmd-palette-list" id="cmdPaletteList">
+                <!-- Rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: TEMPLATE PROMPTS (T-N5) ===== -->
+    <div class="overlay" id="templateOverlay">
+        <div class="popup popup-lg">
+            <div class="popup-header">
+                <h3>📚 Thư viện Prompt</h3>
+                <button class="popup-close" onclick="closeOverlay('templateOverlay')">✕</button>
+            </div>
+            <input type="text" class="input" placeholder="🔍 Tìm prompt..." oninput="filterTemplatePrompts(this.value)" style="margin-bottom:12px">
+            <div class="template-categories" id="templateCategories">
+                <button class="action-chip active" onclick="filterTemplateCategory('all',this)">Tất cả</button>
+                <button class="action-chip" onclick="filterTemplateCategory('academic',this)">🎓 Học thuật</button>
+                <button class="action-chip" onclick="filterTemplateCategory('legal',this)">⚖️ Pháp lý</button>
+                <button class="action-chip" onclick="filterTemplateCategory('medical',this)">🏥 Y tế</button>
+                <button class="action-chip" onclick="filterTemplateCategory('business',this)">💼 Kinh doanh</button>
+                <button class="action-chip" onclick="filterTemplateCategory('education',this)">📚 Giáo dục</button>
+                <button class="action-chip" onclick="filterTemplateCategory('marketing',this)">📢 Marketing</button>
+                <button class="action-chip" onclick="filterTemplateCategory('tech',this)">💻 Kỹ thuật</button>
+                <button class="action-chip" onclick="filterTemplateCategory('custom',this)">⭐ Của tôi</button>
+            </div>
+            <div class="template-list" id="templateList">
+                <!-- Rendered by JS -->
+            </div>
+            <div class="divider"></div>
+            <div style="display:flex;gap:8px;align-items:flex-end">
+                <div style="flex:1">
+                    <label class="lbl">THÊM PROMPT CỦA TÔI</label>
+                    <input type="text" class="input" id="customPromptInput" placeholder="Nhập prompt tùy chỉnh...">
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="addCustomPrompt()">➕ Lưu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: HISTORY (T22) ===== -->
+    <div class="overlay" id="historyOverlay">
+        <div class="popup popup-lg">
+            <div class="popup-header">
+                <h3>📁 Lịch sử toàn bộ</h3>
+                <button class="popup-close" onclick="closeOverlay('historyOverlay')">✕</button>
+            </div>
+            <div class="hist-filter" style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+                <input type="text" class="input" id="histSearch" placeholder="🔍 Tìm kiếm..." oninput="renderFullHist()" style="flex:1;font-size:12px">
+                <select class="select" id="histFilter" onchange="renderFullHist()" style="width:auto;font-size:12px">
+                    <option value="">Tất cả</option>
+                    <option value="stt">🎤 STT</option>
+                    <option value="cvt">🔄 Convert</option>
+                    <option value="chat">💬 Chat</option>
+                </select>
+                <button class="btn btn-danger btn-sm" onclick="clearAllHist()">🗑️ Xóa hết</button>
+            </div>
+            <div class="hist-list" id="fullHistList"></div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: KEYBOARD SHORTCUTS (T-U3) ===== -->
+    <div class="overlay" id="shortcutOverlay">
+        <div class="popup">
+            <div class="popup-header">
+                <h3>⌨️ Phím tắt</h3>
+                <button class="popup-close" onclick="closeOverlay('shortcutOverlay')">✕</button>
+            </div>
+            <div class="shortcut-grid">
+                <div class="shortcut-group">
+                    <h4>📝 Chung</h4>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>K</kbd><span>Focus chat input</span></div>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>P</kbd><span>Command Palette</span></div>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>S</kbd><span>Lưu session</span></div>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>D</kbd><span>Toggle Dark Mode</span></div>
+                    <div class="shortcut-item"><kbd>Esc</kbd><span>Đóng popup</span></div>
+                    <div class="shortcut-item"><kbd>?</kbd><span>Hiển thị phím tắt</span></div>
+                </div>
+                <div class="shortcut-group">
+                    <h4>📑 Chuyển tab</h4>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>1</kbd><span>Notebook AI</span></div>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>2</kbd><span>Phiên âm STT</span></div>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>3</kbd><span>Đọc TTS</span></div>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>4</kbd><span>Ghi hình</span></div>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>5</kbd><span>Chuyển đổi</span></div>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>6</kbd><span>Cài đặt</span></div>
+                </div>
+                <div class="shortcut-group">
+                    <h4>💬 Notebook</h4>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>Enter</kbd><span>Gửi chat</span></div>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>\</kbd><span>Split View</span></div>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>N</kbd><span>New Notebook</span></div>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>E</kbd><span>Export</span></div>
+                    <div class="shortcut-item"><kbd>Alt</kbd>+<kbd>F</kbd><span>Flashcard</span></div>
+                    <div class="shortcut-item"><kbd>Alt</kbd>+<kbd>P</kbd><span>Podcast</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: ONBOARDING TOUR (T-U2) ===== -->
+    <div class="overlay" id="onboardOverlay">
+        <div class="popup popup-lg">
+            <div class="popup-header">
+                <h3>🎓 Chào mừng đến TuongTanDigital-AI!</h3>
+                <button class="popup-close" onclick="closeOverlay('onboardOverlay');ls('vptx_onboard',true)">✕</button>
+            </div>
+            <div id="onboardContent">
+                <!-- Step content rendered by JS -->
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:16px">
+                <button class="btn btn-secondary btn-sm" id="onboardPrev" onclick="onboardPrev()" disabled>← Trước</button>
+                <div id="onboardDots" style="display:flex;gap:6px;align-items:center"></div>
+                <button class="btn btn-primary btn-sm" id="onboardNext" onclick="onboardNext()">Tiếp →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: HELP / USER GUIDE (T-H1, T-H2) ===== -->
+    <div class="overlay" id="helpOverlay">
+        <div class="popup popup-xl">
+            <div class="popup-header">
+                <h3>📘 Hướng dẫn sử dụng TuongTanDigital-AI</h3>
+                <button class="popup-close" onclick="closeOverlay('helpOverlay')">✕</button>
+            </div>
+            <input type="text" class="input" id="helpSearchInput" placeholder="🔍 Tìm trong hướng dẫn..." oninput="searchHelp(this.value)" style="margin-bottom:12px">
+            <div class="help-toc" id="helpToc">
+                <button class="help-toc-item active" onclick="showHelpSection('start')">🚀 Bắt đầu</button>
+                <button class="help-toc-item" onclick="showHelpSection('notebook')">📖 Notebook AI</button>
+                <button class="help-toc-item" onclick="showHelpSection('stt')">🎤 Phiên âm</button>
+                <button class="help-toc-item" onclick="showHelpSection('tts')">🔊 Đọc TTS</button>
+                <button class="help-toc-item" onclick="showHelpSection('rec')">🎥 Ghi hình</button>
+                <button class="help-toc-item" onclick="showHelpSection('cvt')">🔄 Chuyển đổi</button>
+                <button class="help-toc-item" onclick="showHelpSection('advanced')">⚡ Nâng cao</button>
+                <button class="help-toc-item" onclick="showHelpSection('faq')">❓ FAQ</button>
+            </div>
+            <div id="helpContent" class="help-content">
+                <!-- Rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: HELP TOOLTIP (T-H1 inline) ===== -->
+    <div class="overlay" id="helpTooltipOverlay">
+        <div class="popup" style="max-width:480px">
+            <div class="popup-header">
+                <h3 id="helpTooltipTitle">💡 Hướng dẫn</h3>
+                <button class="popup-close" onclick="closeOverlay('helpTooltipOverlay')">✕</button>
+            </div>
+            <div id="helpTooltipContent" style="font-size:13px;line-height:1.7;color:var(--text2)">
+                <!-- Rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: CITATION GENERATOR (T-AI5) ===== -->
+    <div class="overlay" id="citationOverlay">
+        <div class="popup popup-lg">
+            <div class="popup-header">
+                <h3>🎓 Trích dẫn học thuật</h3>
+                <button class="popup-close" onclick="closeOverlay('citationOverlay')">✕</button>
+            </div>
+            <div id="citationContent">
+                <div class="empty-st">Nhấn "🎓 Trích dẫn" trong Quick Actions để tạo trích dẫn học thuật</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: GLOSSARY (T-AI4) ===== -->
+    <div class="overlay" id="glossaryOverlay">
+        <div class="popup popup-lg">
+            <div class="popup-header">
+                <h3>📖 Từ điển thuật ngữ</h3>
+                <button class="popup-close" onclick="closeOverlay('glossaryOverlay')">✕</button>
+            </div>
+            <input type="text" class="input" id="glossarySearch" placeholder="🔍 Tìm thuật ngữ..." oninput="filterGlossary(this.value)" style="margin-bottom:12px">
+            <div id="glossaryContent">
+                <div class="empty-st">Nhấn "📖 Thuật ngữ" trong Quick Actions để tạo từ điển thuật ngữ</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: WRITING ASSISTANT (T-N6) ===== -->
+    <div class="overlay" id="writingAssistOverlay">
+        <div class="popup">
+            <div class="popup-header">
+                <h3>✍️ AI Writing Assistant</h3>
+                <button class="popup-close" onclick="closeOverlay('writingAssistOverlay')">✕</button>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-bottom:10px">Chọn thao tác cho đoạn văn bản đã chọn:</div>
+            <div id="writingAssistText" class="result-box" style="max-height:150px;margin-bottom:12px;font-size:12px"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                <button class="btn btn-secondary btn-sm" onclick="applyWritingAssist('expand')">📝 Mở rộng</button>
+                <button class="btn btn-secondary btn-sm" onclick="applyWritingAssist('shorten')">✂️ Rút gọn</button>
+                <button class="btn btn-secondary btn-sm" onclick="applyWritingAssist('paraphrase')">🔄 Paraphrase</button>
+                <button class="btn btn-secondary btn-sm" onclick="applyWritingAssist('translate')">🌐 Dịch sang tiếng Anh</button>
+                <button class="btn btn-secondary btn-sm" onclick="applyWritingAssist('professional')">💼 Tone chuyên nghiệp</button>
+                <button class="btn btn-secondary btn-sm" onclick="applyWritingAssist('friendly')">😊 Tone thân thiện</button>
+            </div>
+            <div class="prog-wrap" id="writingAssistProg" style="margin-top:10px">
+                <div class="prog-bg"><div class="prog-fill" id="writingAssistProgFill"></div></div>
+                <div class="prog-txt" id="writingAssistProgTxt"></div>
+            </div>
+            <div id="writingAssistResult" class="result-box" style="display:none;margin-top:10px;max-height:200px"></div>
+            <div id="writingAssistActions" style="display:none;margin-top:8px;display:flex;gap:8px">
+                <button class="btn btn-primary btn-sm" onclick="insertWritingAssistResult()" style="flex:1">📋 Chèn kết quả</button>
+                <button class="btn btn-secondary btn-sm" onclick="copyWritingAssistResult()">📋 Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY: SENTIMENT ANALYSIS (T-AI6) ===== -->
+    <div class="overlay" id="sentimentOverlay">
+        <div class="popup popup-lg">
+            <div class="popup-header">
+                <h3>💡 Phân tích cảm xúc & Tone</h3>
+                <button class="popup-close" onclick="closeOverlay('sentimentOverlay')">✕</button>
+            </div>
+            <div id="sentimentContent">
+                <div class="empty-st">Nhấn "💡 Cảm xúc" trong Quick Actions để phân tích</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== JavaScript ===== -->
+    <script src="app.js"></script>
+
+</body>
+</html>
